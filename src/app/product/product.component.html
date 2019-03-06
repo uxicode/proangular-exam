@@ -1,0 +1,59 @@
+<h1>Using Built-in Directive</h1>
+
+<div class="text-white m-2 p-2">
+  <ng-template #titleTemplate let-text="title">
+    <h4 class="p-2 bg-success text-white">{{text}}</h4>
+  </ng-template>
+  <ng-template [ngTemplateOutlet]="titleTemplate" [ngTemplateOutletContext]="{title: 'header'}"></ng-template>
+
+  <div class="bg-info p-2">
+    There are {{getProductCount() }} products in the model
+  </div>
+   <table class="table table-sm table-bordered mt-1">
+     <tr>
+       <th>index</th>
+       <th>Name</th>
+       <th>Category</th>
+       <th>Price</th>
+     </tr>
+     <tr *ngFor="let item of getProducts(); let i=index; let odd=odd; let first=first; let last=last; trackBy:getKey"
+         [class.bg-primary]="odd"
+         [class.bg-info]="!odd"
+         [class.bg-warning]="first || last">
+       <td>{{i+1}}</td>
+       <td>{{item.name}}</td>
+       <td>{{item.category}}</td>
+       <td *ngIf="!last">{{item.price}}</td>
+     </tr>
+   </table>
+
+  <ng-template [ngTemplateOutlet]="titleTemplate" [ngTemplateOutletContext]="{title: 'footer'}"></ng-template>
+</div>
+<div class="bg-info p-2 m-2 text-white">
+  There are {{ getProductPrice(1)}} products.
+</div>
+
+<h1>Using Event and Forms</h1>
+
+<div class="m-2">
+  <div class="bg-info text-white p-2">Selected Product: {{selectedProduct || '(None)'}}</div>
+  <table class="table table-sm table-bordered m-2">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let item of getProducts();let i=index" [class.bg-info]="getSelected(item)" (mouseover)="product.value=item.name" [class.bg-info]="product.value==item.name">
+      <td (mouseover)="selectedProduct=item.name">{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </table>
+
+  <div class="from-group">
+    <label for="">Product Name</label>
+    <input type="text" #product class="from-control" (input)="false">
+  </div>
+</div>
