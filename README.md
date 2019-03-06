@@ -1,4 +1,6 @@
-# ProangularCh11
+# Pro angular 6
+- Pro angular 예제 실습 파일.
+- directive / component / form / event / binding / service / http / router 등의 연습 파일 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
 
