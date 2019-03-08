@@ -1,29 +1,35 @@
 # Pro angular 6
 - Pro angular 예제 실습 파일.
-- directive / component / form / event / binding / service / http / router 등의 연습 파일 
+## Property binding 요약
+- [property]
+- [attr.name]
+- [class.name]
+- [style.name]
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
+### Angular Brackets 요약 
+- [target]="expression"
+- {{expression}}
+- (target)="expression"
+- [(target)]="expression"
 
-## Development server
+## Setting Classes and Styles
+### Using the Class Binding
+- [class]="expression"
+- [class.myClass]="expression"
+- [ngClass]="map"
+여기서 map은 객체이고 String/Array/Object 등의 타입도 쓸 수 있다.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Using the  Style Binding 요약
+- [style.myStyle]="expression"
+- [class.myStyle.unit]="expression"
+- [ngStyle]="map" 
 
-## Code scaffolding
+### Using the Builtin Diretive 요약
+- *ngIf="expression이 true일때 show"
+- *ngSwitch( ngSwitchCase/ ngSwitchDefault )
+- *ngFor="let item of itemData;let i=index;let odd=odd;let even=even;let first=first;let last=last"
+- <ng-template #myTeml let-text="title">{{text}}</ng-template>
+<ng-template [ngTemplateOutlet]="myTeml" [ngTemplateOutletContext]="{title:'Header'}"></ng-template>
+- ngClass
+- ngStyle
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
