@@ -36,7 +36,7 @@
 <h1>Using Event and Forms</h1>
 
 <div class="m-2">
-  <div class="bg-info text-white p-2">Selected Product: {{selectedProduct || '(None)'}}</div>
+  <div class="bg-info text-white p-2">Selected ProductModel: {{selectedProduct || '(None)'}}</div>
   <table class="table table-sm table-bordered m-2">
     <tr>
       <th></th>
@@ -44,7 +44,8 @@
       <th>Category</th>
       <th>Price</th>
     </tr>
-    <tr *ngFor="let item of getProducts();let i=index" [class.bg-info]="getSelected(item)" (mouseover)="product.value=item.name" [class.bg-info]="product.value==item.name">
+    <!--(mouseover)="product.value=item.name" [class.bg-info]="product.value==item.name"-->
+    <tr *ngFor="let item of getProducts();let i=index" [class.bg-info]="getSelected(item)" >
       <td (mouseover)="selectedProduct=item.name">{{i + 1}}</td>
       <td>{{item.name}}</td>
       <td>{{item.category}}</td>
@@ -53,7 +54,100 @@
   </table>
 
   <div class="from-group">
-    <label for="">Product Name</label>
-    <input type="text" #product class="from-control" (input)="false">
+    <label for="">ProductModel Name</label>
+    <input type="text" #product class="from-control" (input)="selectedProduct=$event.target.value" [value]="selectedProduct || '' ">
   </div>
+</div>
+
+<!-- stpe 1 form
+<div class="m-2">
+  <h2>Model data test</h2>
+  <div class="bg-info text-white mb-2 p-2">Model Data: {{jsonProduct}}</div>
+
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text"  class="form-control" [(ngModel)]="newProduct.name" />
+  </div>
+
+  <div class="form-group">
+    <label>Category</label>
+    <input type="text" class="form-control" [(ngModel)]="newProduct.category" />
+  </div>
+
+  <div class="form-group">
+    <label>Price</label>
+    <input type="text"  class="form-control" [(ngModel)]="newProduct.price" />
+  </div>
+  <button class="btn btn-primary" (click)="addProduct(newProduct)">Create</button>
+</div>-->
+
+<div class="m-2">
+  <h2>Step 1 form</h2>
+  <div class="bg-info p-2 mb-2">Model Data: {{jsonProduct}}</div>
+  <form novalidate [formGroup]="form" (ngSubmit)="submitForm(form)">
+    <div class="bg-danger text-white p-2 mb-2" *ngIf="formSubmitted && form.invalid">
+      There are problems with the form
+      <ul><li *ngFor="let error of form.getFormValidationMessages()">{{error}}</li></ul>
+    </div>
+    <!-- step1
+    <div class="form-group">
+      <label for="">Name</label>
+      <input type="text" class="form-control"
+             name="name"
+             [(ngModel)]="newProduct.name"
+             #name="ngModel"
+             required
+             minlength="5"
+             pattern="^[a-zA-z]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || name.dirty) && name.invalid">
+        <li *ngIf="name.errors.required">You must enter a product name</li>
+        <li *ngIf="name.errors.pattern">ProductModel names can only contain letters and spaces</li>
+        <li *ngIf="name.errors.minlength">ProductModel names must be at least {{name.errors.minlength.requiredLength}} characters</li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label for="">Price</label>
+      <input type="text" class="form-control" name="price" [(ngModel)]="newProduct.price" #price="ngModel" required pattern="^[0-9\.]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || price.dirty) && price.invalid">
+        <li *ngFor="let error of getValidationMessages(price)">{{error}}</li>
+      </ul>
+    </div>-->
+
+
+    <!-- 아래는 수동으로 전부 표현 -->
+    <!--<div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="name" [(ngModel)]="newProduct.name" formControlName="name" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || form.controls['name'].dirty) && form.controls['name'].invalid">
+        <li *ngFor="let error of form.controls['name'].getValidationMessages()">{{error}}</li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Category</label>
+      <input class="form-control" name="name" [(ngModel)]="newProduct.category" formControlName="category" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || form.controls['category'].dirty) && form.controls['category'].invalid">
+        <li *ngFor="let error of form.controls['category'].getValidationMessages()">{{error}}</li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Price</label>
+      <input class="form-control" name="price" [(ngModel)]="newProduct.price" formControlName="price" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || form.controls['price'].dirty) && form.controls['price'].invalid">
+        <li *ngFor="let error of form.controls['price'].getValidationMessages()">{{error}}</li>
+      </ul>
+    </div>-->
+
+    <!-- 아래는 위의 공통되는 from-group태그를 ngFor로 표현 -->
+    <div class="form-group" *ngFor="let control of form.productControls">
+      <label>{{control.label}}</label>
+      <input class="form-control" name="control.modelProperty" [(ngModel)]="newProduct[control.modelProperty]" formControlName="{{control.modelProperty}}" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || control.dirty) && control.invalid">
+        <li *ngFor="let error of control.getValidationMessages()">{{error}}</li>
+      </ul>
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="formSubmitted && form.invalid" [class.btn-secondary]="formSubmitted && form.invalid">Create</button>
+  </form>
 </div>

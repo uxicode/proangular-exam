@@ -1,26 +1,26 @@
 import {SimpleDataSource} from './simpleDataSource';
-import {Product} from './product';
+import {ProductModel} from './product.model';
 
 export class RepositoryModel {
   private dataSource:SimpleDataSource;
-  private products: Product[];
-  private locator=(p:Product, id:number)=>p.id==id;
+  private products: ProductModel[];
+  private locator=(p:ProductModel, id:number)=>p.id==id;
 
   constructor() {
     this.dataSource=new SimpleDataSource();
-    this.products=new Array<Product>();
+    this.products=new Array<ProductModel>();
     this.dataSource.getData().forEach(p=>this.products.push(p))
   }
 
-  getProducts(): Product[] {
+  getProducts(): ProductModel[] {
     return this.products;
   }
 
-  getProduct(id:number):Product{
+  getProduct(id:number):ProductModel{
     return this.products.find( p =>  this.locator(p, id) );
   }
 
-  saveProduct(product:Product){
+  saveProduct(product:ProductModel){
     if (product.id == 0 || product.id == null) {
       product.id=this.generateID();
       this.products.push(product);
@@ -39,7 +39,7 @@ export class RepositoryModel {
 
   swapProduct(){
     let p=this.products.shift();
-    this.products.push(new Product(p.id, p.name, p.category, p.price));
+    this.products.push(new ProductModel(p.id, p.name, p.category, p.price));
   }
 
   private generateID():number{

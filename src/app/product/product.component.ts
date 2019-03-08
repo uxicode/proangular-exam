@@ -1,6 +1,8 @@
 import {ApplicationRef, Component, OnInit} from '@angular/core';
 import {RepositoryModel} from '../repository.model';
-import {Product} from '../product';
+import {ProductModel} from '../product.model';
+import {NgForm} from '@angular/forms';
+import {ProductFormGroup} from '../form.model';
 
 @Component({
   selector: 'app-product',
@@ -9,6 +11,7 @@ import {Product} from '../product';
 })
 export class ProductComponent {
   model:RepositoryModel=new RepositoryModel();
+  form: ProductFormGroup = new ProductFormGroup();
   counter: number = 1;
   constructor(ref:ApplicationRef) {
     /* console.log( this.model.getProduct(2) )*/
@@ -26,31 +29,51 @@ export class ProductComponent {
       color:product.price>50? 'red':'green'
     }
   }
-  getProductByPosition(position: number): Product {
+  getProductByPosition(position: number): ProductModel {
     return this.model.getProducts()[position];
   }
-  getProduct(key: number): Product {
+  getProduct(key: number): ProductModel {
     return this.model.getProduct(key);
   }
-  getProducts():Product[]{
+  getProducts():ProductModel[]{
     return this.model.getProducts();
   }
   getProductCount():number{
     console.log("getProductCount invoked");
     return this.getProducts().length;
   }
-  getKey(index: number, product: Product){
+  getKey(index: number, product: ProductModel){
     return product.id;
   }
-  get nextProduct(): Product {
+  get nextProduct(): ProductModel {
     return this.model.getProducts().shift();
   }
   getProductPrice(index: number): number {
     return Math.floor(this.getProduct(index).price);
   }
-
-  selectedProduct: string;
-  getSelected(product:Product):boolean{
+ //==========여기부터 using events and forms =============
+  selectedProduct: string='';
+  getSelected(product:ProductModel):boolean{
     return product.name == this.selectedProduct;
   }
+
+  newProduct: ProductModel = new ProductModel();
+  get jsonProduct() {
+    return JSON.stringify(this.newProduct);
+  }
+  addProduct(p: ProductModel) {
+    console.log("New Product: " + this.jsonProduct);
+  }
+
+  formSubmitted:boolean=false;
+  submitForm(form: NgForm) {
+    this.formSubmitted=true;
+    if (form.valid) {
+      this.addProduct(this.newProduct);
+      this.newProduct = new ProductModel();
+      form.reset();
+      this.formSubmitted=false;
+    }
+  }
+
 }
